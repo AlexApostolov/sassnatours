@@ -1,0 +1,55 @@
+@mixin clearfix {
+  // Append pseudo element after the element to clear the floats
+  &::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+@mixin absCenter {
+  position: absolute;
+  // Center it inside the parent, i.e. by its left edge
+  top: 50%;
+  left: 50%;
+  // Center the element from its center this time
+  transform: translate(-50%, -50%);
+}
+
+// MEDIA QUERY MANAGER
+/*
+0 - 600px:        Phone
+600 - 900px :     Tablet portrait
+900px - 1200px:   Tablet landscape
+1200 - 1800px:    Desktop [original desktop first approach design]
+1800px + :        Big desktop
+
+$breakpoint argument choices:
+- phone
+- tab-port
+- tab-land
+- big-desktop
+
+ORDER: Base + typography -> general layout + grid -> page layout -> components
+*/
+@mixin respond($breakpoint) {
+  // NOTE: media-queries are best with em's not rem's, e.g. 600px / 16px (or our 1rem) = 37.5em.
+  @if $breakpoint == phone {
+    @media only screen and (max-width: 37.5em) {
+      /* content directive passes a block of code into a mixin */
+      @content;
+    }
+  }
+  @if $breakpoint == tab-port {
+    // 900px
+    @media only screen and (max-width: 56.25em) {@content}
+  }
+  @if $breakpoint == tab-land {
+    // 1200px
+    @media only screen and (max-width: 75em) {@content}
+  }
+  @if $breakpoint == big-desktop {
+    // 1800px
+    @media only screen and (min-width: 112.5em) {@content}
+  }
+}

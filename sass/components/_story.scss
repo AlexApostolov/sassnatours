@@ -1,0 +1,97 @@
+.story {
+  width: 75%;
+  margin: 0 auto;
+  box-shadow: 0 3rem 6rem rgba($color-black, 0.1);
+  background-color: rgba($color-white, 0.6);
+  border-radius: 3px;
+  padding: 6rem;
+  // Compensate for shifting circle away from text by having more space to the left of it
+  padding-left: 9rem;
+  font-size: $default-font-size;
+  transform: skewX(-12deg);
+
+  @include respond(tab-port) {
+    width: 100%;
+    padding: 4rem;
+    padding-left: 7rem;
+  }
+
+  @include respond(phone) {
+    transform: skewX(0);
+  }
+
+  &__shape {
+    // To wrap text around the circle pic you need defined dimensions, float, & shape-outside.
+    width: 15rem;
+    height: 15rem;
+    float: left;
+    /* Make some room between the floated circle & the text, then
+    compensate for the skewed container, by skewing the children the opposite way */
+    transform: translateX(-3rem) skewX(12deg);
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+
+    @supports (clip-path: polygon(0 0)) or (-webkit-clip-path: polygon(0 0)) {
+      // Create actual circle with modern approach, instead of border-radius 50%
+      border-radius: none;
+      -webkit-clip-path: circle(50% at 50% 50%);
+      clip-path: circle(50% at 50% 50%);
+      /* Define where the content flows, a circle with 50% radius--half height & width of the element (7.5rem)
+      & centered horizonally & vertically. */
+      -webkit-shape-outside: circle(50% at 50% 50%);
+      shape-outside: circle(50% at 50% 50%);
+  }
+
+    @include respond(phone) {
+      // We still have to include the translate() even though we're only changing the skewX()
+      transform: translate(-3rem) skewX(0);
+    }
+  }
+
+  &__img {
+    /* Flexible images for responsive web design always need a width/height.
+    This img takes the full height of its parent. height is chosen since the pic is wider than it's tall. */
+    height: 100%;
+    // Center the image on the woman subject
+    transform: translateX(-4rem) scale(1.4);
+    backface-visibility: hidden;
+    transition: all 0.5s;
+  }
+
+  &__text {
+    // Compensate for the skewed container, by skewing the children the opposite way
+    transform: skewX(12deg);
+
+    @include respond(phone) {
+      transform: skewX(0);
+    }
+  }
+
+  &__caption {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    text-transform: uppercase;
+    font-size: 1.7rem;
+    text-align: center;
+    color: $color-white;
+    // Start the caption text lower & invisible
+    transform: translate(-50%, 20%);
+    opacity: 0;
+    transition: all 0.5s;
+    backface-visibility: hidden;
+  }
+
+  &:hover &__caption {
+    // Reveal & move in caption
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+
+  &:hover &__img {
+    // Zoom out picture on hover
+    transform: translateX(-4rem) scale(1);
+    filter: blur(3px) brightness(80%);
+  }
+}

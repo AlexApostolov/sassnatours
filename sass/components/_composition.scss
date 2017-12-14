@@ -1,0 +1,71 @@
+.composition {
+  position: relative;
+
+  &__photo {
+    width: 55%;
+    box-shadow: 0 1.5rem 4rem rgba($color-black, 0.4);
+    border-radius: 2px;
+    // To stack photos on top of each other using the parent .composition reference to place them
+    position: absolute;
+    // Starting z-index that will be changed for a photo on hover
+    z-index: 10;
+    transition: all 0.2s;
+    outline-offset: 2rem;
+
+    @include respond(tab-port) {
+      float: left;
+      // Get rid of absolute positioning to float them left
+      position: relative;
+      width: 33.33333333%;
+      box-shadow: 0 1.5rem 3rem rgba($color-black, 0.2);
+    }
+
+    // Place the individual photos
+    &--p1 {
+      left: 0;
+      top: -2rem;
+
+      @include respond(tab-port) {
+        top: 0;
+        transform: scale(1.3);
+      }
+    }
+
+    &--p2 {
+      right: 0;
+      top: 2rem;
+
+      @include respond(tab-port) {
+        top: -1rem;
+        transform: scale(1.3);
+        z-index: 100;
+      }
+    }
+
+    &--p3 {
+      left: 20%;
+      top: 10rem;
+
+      @include respond(tab-port) {
+        top: 1rem;
+        left: 0;
+        transform: scale(1.1);
+      }
+    }
+
+    &:hover {
+      /* Instead of border, use outline here & outline-offset in parent,
+            to have space between the outine and the pic */
+      outline: 1.5rem solid $color-primary;
+      transform: scale(1.05) translateY(-0.5rem);
+      // Cast a bigger darker shadow when pic is closer to user
+      box-shadow: 0 2.5rem 4rem rgba($color-black, 0.5);
+      // Overlap the other photos
+      z-index: 20;
+    }
+  }
+  // Make other photos inside the .composition container smaller that's NOT being hovered on
+  &:hover &__photo:not(:hover) {
+    transform: scale(0.95);
+  }
+}

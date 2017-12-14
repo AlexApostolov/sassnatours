@@ -1,0 +1,115 @@
+.form {
+  &__group:not(:last-child) {
+    margin-bottom: 2rem;
+  }
+
+  &__input {
+    font-size: 1.5rem;
+    font-family: inherit;
+    // Instead of the pitch black font from the browser...
+    color: inherit;
+    // NOTE: usually form elements & buttons have more padding on the sides than above/below
+    padding: 1.5rem 2rem;
+    border-radius: 2px;
+    background-color: rgba($color-white, 0.5);
+    border: none;
+    // Create an invisible border underline for unfocussed inputs to prevent displacing inputs on focus
+    border-bottom: 3px solid transparent;
+    width: 90%;
+    display: block;
+    transition: all 0.3s;
+
+    @include respond(tab-port) {
+      width: 100%;
+    }
+
+    &:focus {
+      // Don't want the browser default outline on focused input
+      outline: none;
+      box-shadow: 0 1rem 2rem rgba($color-black, 0.1);
+      border-bottom: 3px solid $color-primary;
+    }
+
+    // Apply a different style for a focused input element that doesn't have valid text
+    &:focus:invalid {
+      border-bottom: 3px solid $color-secondary-dark;
+    }
+
+    &::-webkit-input-placeholder {
+      color: $color-grey-dark-2;
+    }
+  }
+
+  &__label {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-left: 2rem;
+    margin-top: 0.7rem;
+    display: block;
+    transition: all 0.3s;
+  }
+
+  // Select the sibling immediately after the input, i.e. label
+  &__input:placeholder-shown + &__label {
+    /* We want to be able to animate the appearance of the label as soon as we start typing--placeholder 
+    is gone, so we start with 0 opacity.
+    We also don't want the label element to exist on the page before that so we need it hidden. */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-4rem);
+  }
+
+  &__radio-group {
+    width: 49%;
+    display: inline-block;
+
+    @include respond(tab-port) {
+      width: 100%;
+      margin-bottom: 2rem;
+    }
+  }
+
+  &__radio-input {
+    display: none;
+  }
+
+  &__radio-label {
+    font-size: $default-font-size;
+    cursor: pointer;
+    // Make it possible to position radio-button precisely
+    position: relative;
+    padding-left: 4.5rem;
+  }
+
+  // Outer circle of the drawn radio button
+  &__radio-button {
+    height: 3rem;
+    width: 3rem;
+    border: 5px solid $color-primary;
+    border-radius: 50%;
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    top: -0.4rem;
+
+    // Checked point of the drawn radio button
+    &::after {
+      content: "";
+      display: block;
+      height: 1.3rem;
+      width: 1.3rem;
+      border-radius: 50%;
+      @include absCenter;
+      background-color: $color-primary;
+      // Drawn point of radio button starts off as invisible, i.e. unchecked
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+  }
+
+  /* Use checked status of the real radio button--activated by label--to choose to draw in the point
+  by looking at the adjacent sibling--outer circle--& then its sibling the point with a visible opacity. */
+  &__radio-input:checked + &__radio-label &__radio-button::after {
+    opacity: 1;
+  }
+}

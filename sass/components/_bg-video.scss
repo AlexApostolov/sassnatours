@@ -1,0 +1,23 @@
+.bg-video {
+  // Parent is .section-stories
+  position: absolute;
+  top: 0;
+  left: 0;
+  // Fit the parent
+  height: 100%;
+  width: 100%;
+  // Make sure button etc. is not behind video background
+  z-index: -1;
+  opacity: 0.15;
+  // Clip anything outside the parent
+  overflow: hidden;
+
+  &__content {
+    /* Since the video is much wider than it's tall, setting height & width to 100%
+      will prevent overflowing out of the viewport, but not offer enought height. */
+    height: 100%;
+    width: 100%;
+    // Force html5 video element to cover the parent, even if some clipping is needed.
+    object-fit: cover;
+  }
+}

@@ -1,0 +1,46 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  /* Make all elements inherit box-sizing from body element. */
+  box-sizing: inherit;
+}
+
+html {
+  /* Define what 1rem is: our root font-size of 10px divided by the default browser font-size of 16px */
+  font-size: 62.5%;
+
+  // width < 1200?
+  @include respond(tab-land) {
+    // 1 rem = 9px, 9/16 = 56.25%
+    font-size: 56.25%;
+  }
+
+  // width < 900?
+  @include respond(tab-port) {
+    // 1 rem = 8px, 8/16 = 50%
+    font-size: 50%;
+  }
+
+  // "phone" has the same font-size as the larger "tab-port" so no media query needed for phone
+
+  @include respond(big-desktop) {
+    // 1 rem = 12px, 12/16 = 75%
+    font-size: 75%;
+  }
+}
+
+body {
+  box-sizing: border-box;
+  padding: 3rem;
+  @include respond(tab-port) {
+    padding: 0;
+  }
+}
+
+// Highlight colors on text
+::selection {
+  background-color: $color-primary;
+  color: $color-white;
+}
